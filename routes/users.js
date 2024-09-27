@@ -33,7 +33,7 @@ router.get("/:id/shows", async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, { include: Show });
     if (user) {
-      res.json(user.Shows);
+      res.json(user);
     } else {
       res.status(404).json({ error: "User has not seen any shows" });
     }
@@ -65,14 +65,16 @@ router.post(
   }
 );
 
-router.put("/:id/shows/showId", async () => {
+router.put("/:id/shows/:showId", async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.userId);
+    const user = await User.findByPk(req.params.id);
     const show = await Show.findByPk(req.params.showId);
 
     if (user && show) {
       await user.addShow(show);
-      res.status(200).json({ message: "Show was successfully added" });
+      const updatedUser = await User.findByPk(req.params.id, { include: Show });
+
+      res.status(200).json({ message: "Show was successfully added" , updatedUser });
     } else {
       res.status(404).json({ message: "Cannot find the user or the show" });
     }
