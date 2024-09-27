@@ -33,7 +33,7 @@ router.get("/:id/shows", async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id, { include: Show });
     if (user) {
-      res.json(user);
+      res.json(user.shows);
     } else {
       res.status(404).json({ error: "User has not seen any shows" });
     }

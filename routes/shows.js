@@ -96,4 +96,4 @@ router.get("/genre/genre", async (req, res) => {
 
 module.exports = router;
 
-const user = await User.findByPk(req.params.id, { include: Show });
+// const user = await User.findByPk(req.params.id, { include: Show });
