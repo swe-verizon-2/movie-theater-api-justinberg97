@@ -32,7 +32,7 @@ router.get("/:id/users", async (req, res) => {
   try {
     const show = await Show.findByPk(req.params.id, { include: User });
     if (show) {
-      res.json(show.Users);
+      res.json(show.users);
     } else {
       res.status(404).json({ error: "This user has not seen any shows" });
     }
@@ -41,7 +41,8 @@ router.get("/:id/users", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
+// update this. add available and title property
+//
 router.put(
   "/:id/available",
   [check("available").isBoolean(), check("title").isLength({ max: 25 })],
@@ -53,7 +54,7 @@ router.put(
     try {
       const show = await Show.findByPk(req.params.id);
       if (show) {
-        show.available = rec.body.available;
+        show.available = !show.available;
         await show.save();
         res.status(200).json(show);
       } else {
@@ -81,7 +82,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/genre/genre", async (req, res) => {
   try {
     const shows = await Show.findAll({
       where: { genre: req.query.genre },
@@ -94,3 +95,5 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+
+const user = await User.findByPk(req.params.id, { include: Show });
